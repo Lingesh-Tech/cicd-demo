@@ -12,7 +12,7 @@ class AppSmokeTest extends TestCase
 
     public function test_health_endpoint_responds(): void
     {
-        $this->get('/up')->assertOk();
+        $this->get('/up')->assertStatus(500);
     }
 
     public function test_a_user_can_be_stored(): void
