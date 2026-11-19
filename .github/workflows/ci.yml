@@ -56,33 +56,33 @@ jobs:
         run: php artisan test
   
   deploy:
-  needs: ci
-  if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-  runs-on: ubuntu-latest
-  environment: production
+    needs: ci
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
 
-  steps:
-    - uses: actions/checkout@v4
+    steps:
+      - uses: actions/checkout@v4
 
-    - uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.4'
-        coverage: none
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
 
-    - name: Install production dependencies
-      run: composer install --no-dev --optimize-autoloader --no-interaction --no-progress
+      - name: Install production dependencies
+        run: composer install --no-dev --optimize-autoloader --no-interaction --no-progress
 
-    - name: Package release
-      run: tar --exclude=.git --exclude=tests -czf /tmp/release.tar.gz .
+      - name: Package release
+        run: tar --exclude=.git --exclude=tests -czf /tmp/release.tar.gz .
 
-    - uses: actions/upload-artifact@v4
-      with:
-        name: release
-        path: /tmp/release.tar.gz
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release
+          path: /tmp/release.tar.gz
 
-    - name: Deploy (simulated)
-      run: |
-        echo "Would upload release.tar.gz to the server"
-        echo "Would run: php artisan migrate --force"
-        echo "Would run: php artisan config:cache && php artisan route:cache"
-        echo "Would run: php artisan queue:restart"
+      - name: Deploy (simulated)
+        run: |
+          echo "Would upload release.tar.gz to the server"
+          echo "Would run: php artisan migrate --force"
+          echo "Would run: php artisan config:cache && php artisan route:cache"
+          echo "Would run: php artisan queue:restart"
